@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+VERSION=0.0.1
+
+PV_PREFIX=${PV_PREFIX-/usr/local}
+
+display_help() {
+  cat <<-EOF
+
+Usage: pv [option] version
+
+Commands:
+  pv           Print the current python version
+  pv latest    Download and install the latest stable python version
+  pv latest    Download and install the latest stable python version
+  pv <version> Download and install the given version. An partial
+               version will find the latest version matching that one.
+               For example \`pv 2\` will use python 2.7.18
+
+Options:
+  --version   Print the version of pv
+  -h, --help  Print this help text
+
+EOF
+}
+
+display_pv_version() {
+  echo $VERSION
+}
+
+is_numeric_version() {
+  [[ "$1" =~ [0-3](\.[0-9]+){0,2}$ ]]
+}
+
+install() {
+  local version="$1"
+  echo Installing $version
+  if is_numeric_version $1; then
+    echo numeric version
+  fi
+}
+
+if test $# -eq 0; then
+  display_help
+  exit 0
+fi
+
+case $1 in
+  --version) display_pv_version;;
+  -h|--help) display_help;;
+  -r|--remove|remove) display_help;;
+  *) install $1;;
+esac
+
+
